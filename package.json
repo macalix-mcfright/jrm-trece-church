@@ -1,5 +1,5 @@
 {
-  "name": "jesus-reigns-ministry-cms",
+  "name": "jesus-reigns-ministry-cms-v6_role_implement_update",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.44.4",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

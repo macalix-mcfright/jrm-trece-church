@@ -1,10 +1,6 @@
-export enum Role {
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  ADMIN = 'ADMIN',
-  MINISTRY_HEAD = 'MINISTRY_HEAD',
-  SG_LEADER = 'SG_LEADER',
-  MEMBER = 'MEMBER'
-}
+
+export type AppRole = 'SUPER_ADMIN' | 'ADMIN' | 'MINISTRY_HEAD' | 'SG_LEADER' | 'MEMBER';
+export type MinistryName = 'Worship' | 'Kids' | 'Ushering' | 'None';
 
 export enum AgeGroup {
   KIDS = 'Kids (0-12)',
@@ -20,50 +16,54 @@ export interface CustomFieldDefinition {
   type: 'text' | 'date' | 'boolean' | 'number';
 }
 
+export interface UserRole {
+  id: number;
+  user_id: string;
+  role: AppRole;
+  assigned_ministry: MinistryName;
+}
+
 export interface Profile {
   id: string;
   full_name: string;
   email: string;
-  role: Role;
   dob: string; // ISO Date
   avatar_url?: string;
-  manual_group_override?: AgeGroup | null; // For the "25yo Student in Youth" case
-  // JSONB dynamic data
-  dynamic_data: Record<string, any>; 
-  
-  // Computed on frontend or view
-  computed_group?: AgeGroup;
+  manual_group_override?: AgeGroup | null;
+  status?: 'pending' | 'approved' | 'denied'; // Added status field
+  dynamic_data: Record<string, any>;
+  user_roles: UserRole[]; // Joined from user_roles table
+  computed_group?: AgeGroup; // Client-side computed value
 }
 
 export interface Song {
   id: string;
   title: string;
   artist: string;
-  default_key: string;
-  lyrics_url?: string;
-  youtube_url?: string;
+  original_key: string;
   bpm?: number;
+  lyrics_url?: string;
+  youtube_link?: string;
   tags?: string[];
 }
 
 export interface SongPreferredKey {
   id: string;
   song_id: string;
-  profile_id: string;
-  key_value: string;
-  
-  // Joins
-  profile?: Profile;
+  leader_id: string;
+  preferred_key: string;
+  capo_position?: number;
+  leader?: { full_name: string }; // Joined from profiles table
 }
 
 export interface SongWithKeys extends Song {
-  preferred_keys: SongPreferredKey[];
+  song_preferred_keys: SongPreferredKey[];
 }
 
 export interface TrainingRecord {
   id: string;
   profile_id: string;
-  module_name: string; // e.g., "EGPR", "T4T"
+  module_name: string;
   status: 'Not Started' | 'In Progress' | 'Completed';
   completion_date?: string;
 }

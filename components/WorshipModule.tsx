@@ -49,7 +49,8 @@ const WorshipModule: React.FC = () => {
                 <div className="font-medium text-slate-900">{song.title}</div>
                 <div className="text-xs text-slate-500">{song.artist}</div>
               </div>
-              <KeyBadge musicalKey={song.default_key} />
+              {/* FIX: Property 'default_key' does not exist on type 'SongWithKeys'. Use 'original_key' instead. */}
+              <KeyBadge musicalKey={song.original_key} />
             </div>
           ))}
         </div>
@@ -77,8 +78,9 @@ const WorshipModule: React.FC = () => {
                     <Music className="w-4 h-4" /> Lyrics
                  </a>
                )}
-               {selectedSong.youtube_url && (
-                 <a href={selectedSong.youtube_url} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md border border-slate-300 text-sm font-medium text-red-600 hover:bg-red-50">
+               {/* FIX: Property 'youtube_url' does not exist on type 'SongWithKeys'. Use 'youtube_link' instead. */}
+               {selectedSong.youtube_link && (
+                 <a href={selectedSong.youtube_link} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md border border-slate-300 text-sm font-medium text-red-600 hover:bg-red-50">
                     <ExternalLink className="w-4 h-4" /> YouTube
                  </a>
                )}
@@ -94,21 +96,26 @@ const WorshipModule: React.FC = () => {
                         <div className="bg-slate-200 p-1.5 rounded-full"><Music className="w-3 h-3 text-slate-600"/></div>
                         <span className="text-sm text-slate-700">Original / Default</span>
                     </div>
-                    <KeyBadge musicalKey={selectedSong.default_key} />
+                    {/* FIX: Property 'default_key' does not exist on type 'SongWithKeys'. Use 'original_key' instead. */}
+                    <KeyBadge musicalKey={selectedSong.original_key} />
                 </div>
 
                 {/* Specific Leaders */}
-                {selectedSong.preferred_keys.map(pk => (
+                {/* FIX: Property 'preferred_keys' does not exist on type 'SongWithKeys'. Use 'song_preferred_keys' instead. */}
+                {selectedSong.song_preferred_keys.map(pk => (
                    <div key={pk.id} className="flex items-center justify-between p-3 bg-white rounded-md border border-slate-200 shadow-sm">
                       <div className="flex items-center gap-2">
                         <div className="bg-brand-100 p-1.5 rounded-full"><Mic2 className="w-3 h-3 text-brand-600"/></div>
-                        <span className="text-sm font-medium text-slate-900">{pk.profile?.full_name}</span>
+                        {/* FIX: The related record is `leader`, not `profile`. */}
+                        <span className="text-sm font-medium text-slate-900">{pk.leader?.full_name}</span>
                       </div>
-                      <KeyBadge musicalKey={pk.key_value} className="text-lg" />
+                      {/* FIX: The property for the key is `preferred_key`, not `key_value`. */}
+                      <KeyBadge musicalKey={pk.preferred_key} className="text-lg" />
                    </div>
                 ))}
 
-                {selectedSong.preferred_keys.length === 0 && (
+                {/* FIX: Property 'preferred_keys' does not exist on type 'SongWithKeys'. Use 'song_preferred_keys' instead. */}
+                {selectedSong.song_preferred_keys.length === 0 && (
                     <div className="text-center py-4 text-sm text-slate-400 italic">
                         No leader-specific keys assigned yet.
                     </div>

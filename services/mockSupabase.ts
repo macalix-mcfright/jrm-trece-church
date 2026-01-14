@@ -1,4 +1,4 @@
-import { Profile, Role, AgeGroup, SongWithKeys, CustomFieldDefinition, ProfileWithTraining } from '../types';
+import { Profile, AgeGroup, SongWithKeys, CustomFieldDefinition, ProfileWithTraining } from '../types';
 
 // --- MOCK DATA ---
 
@@ -7,77 +7,84 @@ const MOCK_CUSTOM_FIELDS: CustomFieldDefinition[] = [
   { id: '2', key: 'campus', label: 'Daughter Church', type: 'text' },
 ];
 
+// FIX: Restructured MOCK_PROFILES to match the Profile type in types.ts.
+// Replaced top-level `role` and `assigned_ministry` with a `user_roles` array.
 const MOCK_PROFILES: Profile[] = [
   {
     id: 'p1',
     full_name: 'Pastor John (Admin)',
     email: 'john@jrm-trece.com',
-    role: Role.SUPER_ADMIN,
     dob: '1980-05-15',
-    dynamic_data: { baptism_date: '2000-01-01', campus: 'Trece Martires (Main)' }
+    dynamic_data: { baptism_date: '2000-01-01', campus: 'Trece Martires (Main)' },
+    user_roles: [{ id: 1, user_id: 'p1', role: 'SUPER_ADMIN', assigned_ministry: 'None' }]
   },
   {
     id: 'p2',
     full_name: 'Sarah Worship (Head)',
     email: 'sarah@jrm-trece.com',
-    role: Role.MINISTRY_HEAD,
     dob: '1995-08-20',
-    dynamic_data: { campus: 'Conchu - House Church' }
+    dynamic_data: { campus: 'Conchu - House Church' },
+    user_roles: [{ id: 2, user_id: 'p2', role: 'MINISTRY_HEAD', assigned_ministry: 'Worship' }]
   },
   {
     id: 'p3',
     full_name: 'Mike Guitar (Leader)',
     email: 'mike@jrm-trece.com',
-    role: Role.SG_LEADER,
     dob: '1998-02-10',
-    dynamic_data: { campus: 'Solar House Church' }
+    dynamic_data: { campus: 'Solar House Church' },
+    user_roles: [{ id: 3, user_id: 'p3', role: 'SG_LEADER', assigned_ministry: 'Worship' }]
   },
   {
     id: 'p4',
     full_name: 'Timmy Kid',
     email: 'timmy@gmail.com',
-    role: Role.MEMBER,
     dob: '2015-06-01',
-    dynamic_data: { campus: 'Golden Horizon' }
+    dynamic_data: { campus: 'Golden Horizon' },
+    user_roles: [{ id: 4, user_id: 'p4', role: 'MEMBER', assigned_ministry: 'None' }]
   },
   {
     id: 'p5',
     full_name: 'Jessica Student (25yo)',
     email: 'jess@uni.edu',
-    role: Role.MEMBER,
     dob: '1999-01-01',
     manual_group_override: AgeGroup.YOUTH, // OVERRIDE EXAMPLE
-    dynamic_data: { baptism_date: '2015-05-20', campus: 'Trece Martires (Main)' }
+    dynamic_data: { baptism_date: '2015-05-20', campus: 'Trece Martires (Main)' },
+    user_roles: [{ id: 5, user_id: 'p5', role: 'MEMBER', assigned_ministry: 'None' }]
   }
 ];
 
+// FIX: Renamed `preferred_keys` to `song_preferred_keys` to match the SongWithKeys type.
 const MOCK_SONGS: SongWithKeys[] = [
   {
     id: 's1',
     title: 'Way Maker',
     artist: 'Sinach',
-    default_key: 'E',
+    original_key: 'E',
+    bpm: 68,
     lyrics_url: 'https://genius.com/Sinach-way-maker-lyrics',
-    preferred_keys: [
-      { id: 'k1', song_id: 's1', profile_id: 'p2', key_value: 'D', profile: MOCK_PROFILES[1] },
-      { id: 'k2', song_id: 's1', profile_id: 'p3', key_value: 'E', profile: MOCK_PROFILES[2] }
+    song_preferred_keys: [
+      { id: 'k1', song_id: 's1', leader_id: 'p2', preferred_key: 'D', capo_position: 2, leader: MOCK_PROFILES[1] },
+      { id: 'k2', song_id: 's1', leader_id: 'p3', preferred_key: 'E', capo_position: 0, leader: MOCK_PROFILES[2] }
     ]
   },
   {
     id: 's2',
     title: 'Build My Life',
     artist: 'Housefires',
-    default_key: 'G',
-    preferred_keys: [
-      { id: 'k3', song_id: 's2', profile_id: 'p2', key_value: 'F#', profile: MOCK_PROFILES[1] }
+    original_key: 'G',
+    bpm: 72,
+    youtube_link: 'https://youtube.com/watch?v=12345',
+    song_preferred_keys: [
+      { id: 'k3', song_id: 's2', leader_id: 'p2', preferred_key: 'F#', capo_position: 1, leader: MOCK_PROFILES[1] }
     ]
   },
   {
     id: 's3',
     title: 'Goodness of God',
     artist: 'Bethel Music',
-    default_key: 'A',
-    preferred_keys: []
+    original_key: 'A',
+    bpm: 63,
+    song_preferred_keys: []
   }
 ];
 
